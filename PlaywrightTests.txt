@@ -1,0 +1,109 @@
+ tests in Playwright
+import { chromium, Browser, Page } from 'playwright';
+//1. Verify the web page title is as expected
+async function titleTest() {
+  // Launch the browser
+  const browser: Browser = await chromium.launch();
+  
+  // Create a new browser context
+  const context = await browser.newContext();
+  
+  // Create a new page
+  const page: Page = await context.newPage();
+  
+  // Navigate to a webpage
+  await page.goto(‘https://www.demoblaze.com/# ‘);
+  
+  // Interact with elements on the page
+  const pageTitle = await page.title();
+  console.log('Page title:', pageTitle);
+  
+  // Perform assertions
+  if (pageTitle === ' STORE’) {
+    console.log('Test passed!');
+  } else {
+    console.log('Test failed!');
+  }
+  
+  // Close the browser
+  await browser.close();
+}
+
+runTest().catch((err) => console.error(err));
+
+// 2. Verify the user login
+async function testLogin() {
+  // Launch a new browser instance
+  const browser: Browser = await chromium.launch();
+
+  // Create a new page
+  const page: Page = await browser.newPage();
+
+  // Navigate to the site home page page
+  await page.goto(‘https://www.demoblaze.com/cart.html’);
+
+//click on the Login button
+const loginButton = await page.$('# login2’);
+loginButton.click();
+
+  // Fill in the login form
+  await page.fill(' #loginusername', ‘Tamar’);
+  await page.fill('# loginpassword', 'AAAaaa123’);
+
+  // Submit the login form
+  await page.click.%x(‘//*[@id="logInModal"]/div/div/div[3]/button[2]’);
+
+  // Wait for navigation to complete
+  await page.waitForNavigation();
+
+  // Verify the login was successful
+  const loggedInUser = await page.innerText(‘# nameofuser');
+  if ((loggedInUser === ‘Welcome Tamar’) 
+    console.log('Login test passed!');
+  } else {
+    console.error('Login test failed!');
+  }
+
+  // Close the browser
+  await browser.close();
+}
+
+// 3. Verify the user Sign up
+async function testLogin() {
+  // Launch a new browser instance
+  const browser: Browser = await chromium.launch();
+
+  // Create a new page
+  const page: Page = await browser.newPage();
+
+  // Navigate to the site home page 
+  await page.goto(‘https://www.demoblaze.com/cart.html’);
+
+//click on the Sign up button
+const SignupButton = await page.$('# signin2’);
+Signup.click();
+
+  // Fill in the Sign up form
+  await page.fill(' #sign-username', ‘Libi’);
+  await page.fill('# sign-password', 'AAAaaa123’);
+
+  // Submit the Sign up form
+  await page.click.%x(‘//*[@id="signInModal"]/div/div/div[3]/button[2]’);
+
+// Wait for the dialog to appear
+const dialog = await page.waitForDialog();
+
+// Get the dialog message text
+const messageText = dialog.message();
+  if ((messageText === ‘Sign up successful.’) 
+    console.log('SignUp test passed!');
+  } else {
+    console.error('Sign up test failed!');
+// Click the "OK" button to close the dialog
+await dialog.dismiss(); 
+  // Close the browser
+  await browser.close();
+}
+
+??"?
+
