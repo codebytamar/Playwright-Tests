@@ -69,7 +69,7 @@ loginButton.click();
 }
 
 // 3. Verify the user Sign up
-async function testLogin() {
+async function testSignup() {
   // Launch a new browser instance
   const browser: Browser = await chromium.launch();
 
@@ -97,7 +97,7 @@ const dialog = await page.waitForDialog();
 const messageText = dialog.message();
   if ((messageText === ‘Sign up successful.’) 
     console.log('SignUp test passed!');
-  } else {
+  } else 
     console.error('Sign up test failed!');
 // Click the "OK" button to close the dialog
 await dialog.dismiss(); 
