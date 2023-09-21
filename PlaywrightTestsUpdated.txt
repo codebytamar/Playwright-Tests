@@ -1,0 +1,269 @@
+ tests in Playwright
+import { chromium, Browser, Page } from 'playwright';
+//1. Verify the web page title is as expected
+async function titleTest() {
+try{
+  // Launch the browser
+  const browser: Browser = await chromium.launch(); 
+  // Create a new browser context
+  const context = await browser.newContext();  
+  // Create a new page
+  const page: Page = await context.newPage();  
+  // Navigate to a webpage
+  await page.goto(‘https://www.demoblaze.com/# ‘);  
+  // Interact with elements on the page
+  const pageTitle = await page.title();
+  console.log('Page title:', pageTitle);  
+  // Perform assertions
+  if (pageTitle === ' STORE’) {
+    console.log('Test passed!');
+  } else {
+    console.log('Test failed!');
+  }
+} catch (error) {
+    console.error('Error:', error);
+  } finally {
+    // Close the browser
+    await browser.close();
+  }
+}  
+}
+// 2. Verify the user login
+async function testLogin() {
+try{
+  // Launch a new browser instance
+  const browser: Browser = await chromium.launch();
+
+  // Create a new page
+  const page: Page = await browser.newPage();
+
+  // Navigate to the site home page page
+  await page.goto(‘https://www.demoblaze.com/cart.html’);
+
+//click on the Login button
+const loginButton = await page.$('# login2’);
+loginButton.click();
+
+  // Fill in the login form
+  await page.fill(' #loginusername', ‘Tamar’);
+  await page.fill('# loginpassword', 'AAAaaa123’);
+
+  // Submit the login form
+  await page.click.%x(‘//*[@id="logInModal"]/div/div/div[3]/button[2]’);
+
+  // Wait for navigation to complete
+  await page.waitForNavigation();
+
+  // Verify the login was successful
+  const loggedInUser = await page.innerText(‘# nameofuser');
+  if ((loggedInUser === ‘Welcome Tamar’) 
+    console.log('Login test passed!');
+  } else {
+    console.error('Login test failed!');
+  }
+} catch (error) {
+    console.error('Error:', error);
+  } finally {
+    // Close the browser
+    await browser.close();
+  }
+}
+// 3. Verify the user Sign up
+async function testLogin() {
+try{
+  // Launch a new browser instance
+  const browser: Browser = await chromium.launch();
+
+  // Create a new page
+  const page: Page = await browser.newPage();
+
+  // Navigate to the site home page 
+  await page.goto(‘https://www.demoblaze.com/cart.html’);
+
+//click on the Sign up button
+const SignupButton = await page.$('# signin2’);
+Signup.click();
+
+  // Fill in the Sign up form
+  await page.fill(' #sign-username', ‘Libi’);
+  await page.fill('# sign-password', 'AAAaaa123’);
+
+  // Submit the Sign up form
+  await page.click.%x(‘//*[@id="signInModal"]/div/div/div[3]/button[2]’);
+
+// Wait for the dialog to appear
+const dialog = await page.waitForDialog();
+
+// Get the dialog message text
+const messageText = dialog.message();
+  if ((messageText === ‘Sign up successful.’) 
+    console.log('SignUp test passed!');
+  } else {
+    console.error('Sign up test failed!');
+// Click the "OK" button to close the dialog
+await dialog.dismiss(); 
+} catch (error) {
+    console.error('Error:', error);
+  } finally {
+    // Close the browser
+    await browser.close();
+  }
+}
+// 4. Verify adding 1 product to cart
+async function checkAddToCartButton() 
+{
+try {
+     const browser: Browser = await chromium.launch();
+     const page: Page = await browser.newPage();
+    await page.goto(‘https://www.demoblaze.com/cart.html’);
+    await page.click.%x(‘//*[@id="signInModal"]/div/div/div[3]/button[2]’);
+// click on the product to add
+  const linkElement = await page.$('a[href="prod.html?idp_=1"][class="hrefch"]');
+  await linkElement?.click();
+//click on “add to cart
+await page.click('xpath=//*[@id="tbodyid"]/div[2]/div/a');
+await page.waitForNavigation();
+// Wait for the dialog to appear
+const dialog = await page.waitForDialog();
+// Get the dialog message text
+const messageText = dialog.message();
+  if ((messageText !== ‘Product added.’) 
+    console.error (The product was not added to cart');
+  } else {
+// Click the "OK" button to close the dialog
+await dialog.dismiss(); 
+// Go to “Cart page”
+await page. click $('xpath=//*[@id="navbarExample"]/ul/li[4]/a');
+// verify product in the cart page:
+    // Verify the product picture name
+    const productPicture = await page.$eval('#tbodyid img', (element) => element.getAttribute('src'));
+    if (productPicture === 'imgs/galaxy_s6.jpg') {
+      console.log('Picture name verification passed');
+    } else {
+      console.error('Picture name verification failed');
+    }
+
+    // Verify the product title
+    const productTitle = await page.$eval('#tbodyid h2', (element) => element.textContent);
+    if (productTitle === 'Samsung galaxy s6') {
+      console.log('Product title verification passed');
+    } else {
+      console.error('Product title verification failed');
+    }
+
+    // Verify the product price
+    const productPrice = await page.$eval('#tbodyid .price-container', (element) => element.textContent);
+    if (productPrice === 'Price: 360') {
+      console.log('Product price verification passed');
+    } else {
+      console.error('Product price verification failed');
+    }
+    // Close the browser
+    await browser.close();
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+}
+// 5. Verify the deleting product from the cart
+  try {
+    // Launch the browser
+    const browser = await chromium.launch();
+
+    // Create a new browser context
+    const context = await browser.newContext();
+
+    // Create a new page
+    const page = await context.newPage();
+
+    // Navigate to the page
+    await page.goto('https://www.demoblaze.com/');
+
+    // Find and click on the "Cart" link
+    const cartLink = await page.$('[data-target="#cart"]');
+    await cartLink.click();
+
+// click on the product to add
+  const linkElement = await page.$('a[href="prod.html?idp_=1"][class="hrefch"]');
+  await linkElement?.click();
+//click on “add to cart
+await page.click('xpath=//*[@id="tbodyid"]/div[2]/div/a');
+await page.waitForNavigation();
+// Wait for the dialog to appear
+const dialog = await page.waitForDialog();
+// Get the dialog message text
+const messageText = dialog.message();
+  if ((messageText !== ‘Product added.’) 
+console.error (The product was not added to cart');
+  } else {
+// Click the "OK" button to close the dialog
+await dialog.dismiss(); 
+// Go to “Cart page”
+await page. click $('xpath=//*[@id="navbarExample"]/ul/li[4]/a');
+    // Verify the product title
+    const productTitle = await page.$eval('#tbodyid h2', (element) => element.textContent);
+    if (productTitle === 'Samsung galaxy s6') {
+      console.log('Product title verification passed');
+    } else {
+      console.error('Product title verification failed');
+    // Find and click on the "Delete" button
+      const deleteButton =  await page ('a[onclick="deleteItem(\'631bbb6a-d439-28a2-a2b6-     a996fe44e5cb\')"]'); 
+await deleteButton.click();
+
+    // Find the "Delete" button
+      const deleteButtonExists =  await page ('a[onclick="deleteItem(\'631bbb6a-d439-28a2-a2b6-     a996fe44e5cb\')"]');
+if (deleteButtonExists) {
+  console.error('Delete button exists on the screen - Test failed!');
+} else {
+  console.log('Button does not exist on the screen - Test passed!');
+}    
+    // Close the browser
+    await browser.close();
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+
+//6. Verify the “contact” screen
+import { chromium } from 'playwright';
+  try {
+    // Launch the browser
+    const browser = await chromium.launch();
+
+    // Create a new browser context
+    const context = await browser.newContext();
+
+    // Create a new page
+    const page = await context.newPage();
+
+    // Navigate to the contact page
+    await page.goto(‘https://www.demoblaze.com/index.html’);
+//click on “contact”
+await page.click('a.nav-link[data-toggle="modal"][data-target="#exampleModal"]');
+    // Fill in the email input field
+    await page.fill('# recipient-email ', 'test@example.com');
+
+    // Fill in the name input field
+    await page.fill(' #recipient-name ', 'John Doe');
+
+    // Fill in the message input field
+    await page.fill('# message-text ', 'This is a test message.');
+
+    // Click on the send button
+    await page.click.$x(' //*[@id="exampleModal"]/div/div/div[3]/button[2] ');
+// Wait for the dialog to appear
+const dialog = await page.waitForDialog();
+// Get the dialog message text
+const messageText = dialog.message();
+  if ((messageText === ‘Thanks for the message!!’) 
+    console.log('Contact test passed!');
+  } else {
+    console.error(Contact test failed!');
+// Click the "OK" button to close the dialog
+await dialog.dismiss();
+    // Close the browser
+    await browser.close();
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+
+??"?
+
